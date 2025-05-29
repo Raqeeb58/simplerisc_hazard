@@ -8,7 +8,11 @@ output reg [31:0]immx,branch_target;
 
 always @(*)
 begin
-    immx <= {{14{instruction[17]}},instruction[17:0]};
     branch_target <= pc + ({{5{instruction[26]}}, instruction[26:0]} << 0);
+    case(instruction[17:16])
+    2'b01   : immx <= {16'b0, instruction[15:0]};
+    2'b10   : immx <= instruction[15:0] << 16 ;
+    default : immx <= {{16{instruction[15]}},instruction[15:0]}; 
+    endcase
 end
 endmodule
