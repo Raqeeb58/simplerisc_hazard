@@ -23,7 +23,7 @@ assign forwardA_E = (rst == 1'b1) ? 2'b00 : //RD_M
                         2'b00;
 // Forwarding logic for operand B (RS2                                RD_M == RS2_E
 assign forwardB_E = (rst == 1'b1) ? 2'b00 : 
-                       ((isWb_M == 1'b1)  /*&(instruction_rw[25:22]!=4'b0) */& (instruction_m[25:22] == instruction_e[17:14]) & (instruction_e[31:27] != 5'b00101)) ? 2'b10 : // Forward from MEM stage
+    ((isWb_M == 1'b1)  /*&(instruction_rw[25:22]!=4'b0) */& (instruction_m[25:22] == instruction_e[17:14]) /*& (instruction_e[31:27] != 5'b00101)*/) ? 2'b10 : // Forward from MEM stage
                        ((isWb_RW == 1'b1) /*&(instruction_rw[25:22]!=4'b0)&*/ & (instruction_rw[25:22] == instruction_e[17:14])) ? 2'b01 : //Forward from WB stage if
                         2'b00;                                    //RD_RW == RS2_E
                      
