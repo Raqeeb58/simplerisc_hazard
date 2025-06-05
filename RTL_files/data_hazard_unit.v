@@ -18,7 +18,7 @@ module data_hazard_unit(rst,isWb_M,instruction_m,instruction_rw,instruction_e,is
 
 // Forwarding logic for operand A (RS1)
 assign forwardA_E = (rst == 1'b1) ? 2'b00 : //RD_M
-                       ((isWb_M == 1'b1) /*&(instruction_m[25:22] !=4'b0)*/ & (instruction_m[25:22] == instruction_e[21:18]) & (instruction_m != 5'b01110)) ? 2'b10 ://Forward from MEM stage
+    ((isWb_M == 1'b1) /*&(instruction_m[25:22] !=4'b0)*/ & (instruction_m[25:22] == instruction_e[21:18]) & (instruction_m != 5'b01110)) ? 2'b10 ://Forward from MEM stage //no load beacause of load use hazard
                        ((isWb_RW == 1'b1) /*&(instruction_m[25:22] !=4'b0)*/ & (instruction_rw[25:22] == instruction_e[21:18]) )? 2'b01 : //Forward from WB stage
                         2'b00;
 // Forwarding logic for operand B (RS2                                RD_M == RS2_E
@@ -29,9 +29,9 @@ assign forwardB_E = (rst == 1'b1) ? 2'b00 :
                      
 assign forwardA_M_E = (rst == 1'b1) ? 2'b00 : 
                   ((isWb_M == 1'b1) &/*(RD_M !=4'b0) & */(instruction_m[25:22] == instruction_e[25:22]) ) ? 2'b10 : 
-                   (instruction_rw[25:22] == instruction_e[25:22]) ?  2'b01 : 2'b00;
+    (instruction_rw[25:22] == instruction_e[25:22]) ?  2'b01 : 2'b00; //store after alu operation
                    
 assign forward_RW_M = (rst == 1'b1) ? 1'b0 :
-                     ((isWb_RW == 1'b1) /*&(RD_M !=4'b0)*/& (instruction_rw[25:22] == instruction_m[25:22]) &&(instruction_m[31:27] ==5'b01111) &&(instruction_rw[31:27] ==5'b01110)) ? 1'b1: 1'b0; 
+    ((isWb_RW == 1'b1) /*&(RD_M !=4'b0)*/& (instruction_rw[25:22] == instruction_m[25:22]) &&(instruction_m[31:27] ==5'b01111) &&(instruction_rw[31:27] ==5'b01110)) ? 1'b1: 1'b0;//ld and store 
 endmodule
 
