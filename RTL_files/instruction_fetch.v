@@ -29,6 +29,8 @@ begin
     pc_f <= 32'd0;
     instruction_f <= 32'b01101000000000000000000000000000;
     end
+    else if(add_stall)
+        pc_f <= pc_top ;
     else
     begin
     pc_f <= pc_top;
