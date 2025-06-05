@@ -22,7 +22,7 @@ begin
         end*/
     else if(add_stall)
         begin
-            pc <= pc -1  ;
+            pc <= pc   ;
         end
     else if(interrupt)
         begin
